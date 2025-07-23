@@ -1,0 +1,9 @@
+{
+    "editor.suggestOnTriggerCharacters": false,
+    "editor.quickSuggestions": {
+        "other": "off"
+    },
+    "files.associations": {
+        "compare": "c"
+    }
+}
