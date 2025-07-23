@@ -1,0 +1,7 @@
+lab5-handin.zip
+csim
+test-trans
+tracegen
+*.o
+trace.tmp
+.csim_results
