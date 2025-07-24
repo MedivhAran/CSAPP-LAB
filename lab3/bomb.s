@@ -519,6 +519,7 @@ Disassembly of section .text:
   4010f3:	c3                   	ret
 
 00000000004010f4 <phase_6>:
+---------------------------step1 每个数都要小于等于6,且互不相等   -----------------------------------------------------
   4010f4:	41 56                	push   %r14
   4010f6:	41 55                	push   %r13
   4010f8:	41 54                	push   %r12
@@ -526,41 +527,41 @@ Disassembly of section .text:
   4010fb:	53                   	push   %rbx
   4010fc:	48 83 ec 50          	sub    $0x50,%rsp
   401100:	49 89 e5             	mov    %rsp,%r13                   
-  401103:	48 89 e6             	mov    %rsp,%rsi                    #rsi = rsp
+  401103:	48 89 e6             	mov    %rsp,%rsi                    
   401106:	e8 51 03 00 00       	call   40145c <read_six_numbers>
-  40110b:	49 89 e6             	mov    %rsp,%r14                    #r14 = rsp
-  40110e:	41 bc 00 00 00 00    	mov    $0x0,%r12d                   #r12d = 0
+  40110b:	49 89 e6             	mov    %rsp,%r14                    
+  40110e:	41 bc 00 00 00 00    	mov    $0x0,%r12d                   
 
-
-  401114:	4c 89 ed             	mov    %r13,%rbp                    #rbp = num[1], rbp -p>num[2]
-  401117:	41 8b 45 00          	mov    0x0(%r13),%eax               #rax = num[1], rax = num[2]
-  40111b:	83 e8 01             	sub    $0x1,%eax                    #rax = num[1] - 1, rax = num[2] - 1
-  40111e:	83 f8 05             	cmp    $0x5,%eax                   #num[1] - 1 <= 5 continue
+------------------------------------大循环-----------------------------------------------------
+  4010f4:	41 56                	push   %r14
+  401114:	4c 89 ed             	mov    %r13,%rbp                    
+  401117:	41 8b 45 00          	mov    0x0(%r13),%eax              
+  40111b:	83 e8 01             	sub    $0x1,%eax                    
+  40111e:	83 f8 05             	cmp    $0x5,%eax                   
   
   401121:	76 05                	jbe    401128 <phase_6+0x34>
   401123:	e8 12 03 00 00       	call   40143a <explode_bomb>  
 
 
-  401128:	41 83 c4 01          	add    $0x1,%r12d                   #r12d = 1
+  401128:	41 83 c4 01          	add    $0x1,%r12d                  #计数器 6次之后结束循环
   40112c:	41 83 fc 06          	cmp    $0x6,%r12d                   
   401130:	74 21                	je     401153 <phase_6+0x5f>
   
-  401132:	44 89 e3             	mov    %r12d,%ebx                   #rbx = 1
+  401132:	44 89 e3             	mov    %r12d,%ebx                   
 
+-----------------------------小循环---------------------------------------
 
-
-
-  401135:	48 63 c3             	movslq %ebx,%rax                    #rax = 1, rax = 2, rax = 5
-  401138:	8b 04 84             	mov    (%rsp,%rax,4),%eax           #rax = num[2], rax = num[3], rax = num[6]
-  40113b:	39 45 00             	cmp    %eax,0x0(%rbp)               #num[2] != num[1], num[3] != num[1], num[6] != num[1]
+  401135:	48 63 c3             	movslq %ebx,%rax                    
+  401138:	8b 04 84             	mov    (%rsp,%rax,4),%eax           
+  40113b:	39 45 00             	cmp    %eax,0x0(%rbp)               
   40113e:	75 05                	jne    401145 <phase_6+0x51>
   401140:	e8 f5 02 00 00       	call   40143a <explode_bomb>
-  401145:	83 c3 01             	add    $0x1,%ebx                    #rbx = 2, rbx = 3 .......   rbx = 6
-  401148:	83 fb 05             	cmp    $0x5,%ebx                    #rbx <= 5, rbx = 6
+  401145:	83 c3 01             	add    $0x1,%ebx                   
+  401148:	83 fb 05             	cmp    $0x5,%ebx                    
   40114b:	7e e8                	jle    401135 <phase_6+0x41>        
-  40114d:	49 83 c5 04          	add    $0x4,%r13                   #rax = num[6][1], rbx = 6, r13 -> num[2]
+  40114d:	49 83 c5 04          	add    $0x4,%r13                  
   401151:	eb c1                	jmp    401114 <phase_6+0x20>
-
+----------------------------step2 反转 7-num[i]-----------------------------------------------------
 
   401153:	48 8d 74 24 18       	lea    0x18(%rsp),%rsi  
   401158:	4c 89 f0             	mov    %r14,%rax        
@@ -571,10 +572,12 @@ Disassembly of section .text:
   401166:	48 83 c0 04          	add    $0x4,%rax
   40116a:	48 39 f0             	cmp    %rsi,%rax
   40116d:	75 f1                	jne    401160 <phase_6+0x6c>
-
+  401151:	eb c1                	jmp    401114 <phase_6+0x20>
+------------------------------按7减去输入数字后的顺序放入node---------------------------------------------------
 
   40116f:	be 00 00 00 00       	mov    $0x0,%esi
   401174:	eb 21                	jmp    401197 <phase_6+0xa3>
+
   401176:	48 8b 52 08          	mov    0x8(%rdx),%rdx
   40117a:	83 c0 01             	add    $0x1,%eax
   40117d:	39 c8                	cmp    %ecx,%eax
@@ -586,7 +589,7 @@ Disassembly of section .text:
   40118d:	48 83 c6 04          	add    $0x4,%rsi
   401191:	48 83 fe 18          	cmp    $0x18,%rsi
   401195:	74 14                	je     4011ab <phase_6+0xb7>
-
+------------------------------按7减去输入数字后的顺序放入node-----------------------
 
   401197:	8b 0c 34             	mov    (%rsp,%rsi,1),%ecx
   40119a:	83 f9 01             	cmp    $0x1,%ecx
@@ -594,7 +597,7 @@ Disassembly of section .text:
   40119f:	b8 01 00 00 00       	mov    $0x1,%eax
   4011a4:	ba d0 32 60 00       	mov    $0x6032d0,%edx
   4011a9:	eb cb                	jmp    401176 <phase_6+0x82>
-
+------------------------------重建链表-----------------------
   4011ab:	48 8b 5c 24 20       	mov    0x20(%rsp),%rbx
   4011b0:	48 8d 44 24 28       	lea    0x28(%rsp),%rax
   4011b5:	48 8d 74 24 50       	lea    0x50(%rsp),%rsi
@@ -606,6 +609,8 @@ Disassembly of section .text:
   4011cb:	74 05                	je     4011d2 <phase_6+0xde>
   4011cd:	48 89 d1             	mov    %rdx,%rcx
   4011d0:	eb eb                	jmp    4011bd <phase_6+0xc9>
+
+  ------------------------------逐个比较，单调递减的序列-----------------------
   4011d2:	48 c7 42 08 00 00 00 	movq   $0x0,0x8(%rdx)
   4011d9:	00 
   4011da:	bd 05 00 00 00       	mov    $0x5,%ebp
