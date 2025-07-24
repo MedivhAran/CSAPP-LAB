@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
     input = read_line();
     phase_6(input);
     phase_defused();
-
+    
     /* Wow, they got it!  But isn't something... missing?  Perhaps
      * something they overlooked?  Mua ha ha ha ha! */
     
