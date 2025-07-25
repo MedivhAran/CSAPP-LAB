@@ -6,7 +6,7 @@
 
 ## 2. 背景资料
 
-程序ctarget是一个具有缓冲区溢出缺陷的程序。在执行改程序时，会调用getbuf函数。
+程序ctarget是一个具有缓冲区溢出缺陷的程序。在执行该程序时，会调用getbuf函数。
 
 ```
 unsigned getbuf()
