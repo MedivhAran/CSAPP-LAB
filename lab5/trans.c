@@ -30,7 +30,7 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
             {
                 for (jj = j; jj < j + 8; jj++)
                 {
-                        B[jj][ii] = A[ii][jj];
+                        B[ii][jj] = A[jj][ii];
                 }
             }
         }
