@@ -85,33 +85,7 @@ void trans(int M, int N, int A[N][M], int B[M][N])
 		}
 	}
 }
-char trans_desc1[] = "64 64 transpose";
-void trans_1(int M, int N, int A[N][M], int B[M][N])
-{
-    int i, j, ii, jj;
-    int t0, t1, t2, t3;
-        for (ii = 0; ii < N; ii += 4)
-            for (jj = 0; jj < M; jj += 4)
-            {
-                for (i = ii; i < ii + 4; i++)
-                {
-                    if (ii == jj)
-                        {
-                            t0 = A[i][j];
-                            t1 = A[i][j + 1];
-                            t2 = A[i][j + 2];
-                            t3 = A[i][j + 3];   
-                            B[j][i] = t0;
-                            B[j + 1][i] = t1;
-                            B[j + 2][i] = t2;
-                            B[j + 3][i] = t3;
-                        }
-                    else
-                        for (j = jj; j < jj + 4; j++)
-                            B[j][i] = A[i][j];
-                }
-            }
-}
+
 
 /*
  * registerFunctions - This function registers your transpose
@@ -127,7 +101,6 @@ void registerFunctions()
 
     /* Register any additional transpose functions */
     registerTransFunction(trans, trans_desc); 
-    registerTransFunction(trans_1, trans_desc1); 
 
 }
 
