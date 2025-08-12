@@ -40,7 +40,7 @@ int verbose = 0;
 void initLines()
 {
     Cache.cache_lines = (cache_line_t ***)malloc(sizeof(cache_line_t **) * (1 << Cache.s));
-    for (int i = 0; i < Cache.s; i++)
+    for (int i = 0; i < (1 << Cache.s); i++)
     {
         Cache.cache_lines[i] = (cache_line_t **)malloc(sizeof(cache_line_t *) * Cache.E);
     }
