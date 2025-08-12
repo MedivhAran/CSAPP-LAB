@@ -206,8 +206,6 @@ void simTrace(int s, int E, int b, char *filename)
     }
 }
 
-
-
 int main(int argc, char **argv)
 {
     getoptions(argc, argv);
