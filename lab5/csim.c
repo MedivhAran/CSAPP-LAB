@@ -30,7 +30,7 @@ typedef struct
 
 cache_t Cache;
 int Hits = 0, Misses = 0, Evictions = 0;
-static const int max_time = 1 << 31;
+static const int Max_time = 1 << 31;
 
 
 char filename[100];
@@ -54,7 +54,7 @@ void initLines()
         for (int j = 0; j < Cache.E; j++){
             Cache.cache_lines[i][j]->valid = 0;
             Cache.cache_lines[i][j]->tag = -1;
-            Cache.cache_lines[i][j]->time = max_time;
+            Cache.cache_lines[i][j]->time = Max_time;
             Cache.cache_lines[i][j]->data = (char*)malloc(sizeof(char) * (1 << Cache.b));
         }
     }
@@ -129,7 +129,7 @@ void simTrace(int s, int E, int b, char *filename)
     unsigned adress;
     int size;
 
-    while (fscanf(file_ptr, "%c %x, %d", &operation, &adress, &size) != EOF)
+    while (fscanf(file_ptr, " %c %x,%d", &operation, &adress, &size) != EOF)
     {
         if (operation == 'I')
             continue;
@@ -141,9 +141,15 @@ void simTrace(int s, int E, int b, char *filename)
         int lru_index = 0;
         int max_time = -1;
 
+
+        for (int i = 0; i < E; i++) {
+            if (Cache.cache_lines[set_index][i]->valid)
+                Cache.cache_lines[set_index][i]->time++;
+        }
+        
         for (int i = 0; i < E; i++)
         {
-            if (Cache.cache_lines[set_index][i]->valid)                     //遍历该set中的每个cache line
+            if (Cache.cache_lines[set_index][i]->valid)                     //遍历该set中的每个有效的cache line
             {
                 if (Cache.cache_lines[set_index][i]->tag == tag)            //如果该行有效且tag匹配
                 {
@@ -155,13 +161,13 @@ void simTrace(int s, int E, int b, char *filename)
                     break;
                 }
                 else                                                         //如果该行有效但tag不匹配       
-                {
-                    Cache.cache_lines[set_index][i]->time++;                //将该行的time加1，表示距离上次使用的时间增加   
+                {  
                     if (Cache.cache_lines[set_index][i]->time > max_time)   //找出time最大的行，即最久未使用的行
                     {
                         max_time = Cache.cache_lines[set_index][i]->time;
                         lru_index = i;                                      //记录最久未使用的行的索引
                     }
+                    
                 }
             }
             else if (empty_line_index == -1)                                //如果该行无效且还没有找到空行,记录该行的索引
