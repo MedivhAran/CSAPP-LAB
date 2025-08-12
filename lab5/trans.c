@@ -23,14 +23,34 @@ char transpose_submit_desc[] = "Transpose submission";
 void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 {
     int i, j, ii, jj;
-      for (jj = 0; jj < N; jj += 8)
-        for (ii = 0; ii < M; ii += 8)
+    int t0, t1, t2, t3, t4, t5, t6, t7;
+      for (ii = 0; ii < N; ii += 8)
+        for (jj = 0; jj < M; jj += 8)
         {
             for (i = ii; i < ii + 8; i++)
             {
                 for (j = jj; j < jj + 8; j++)
                 {
-                        B[i][j] = A[j][i];
+                    if (ii == jj)
+                    {
+                        t0 = A[i][j];
+                        t1 = A[i][j + 1];
+                        t2 = A[i][j + 2];
+                        t3 = A[i][j + 3];   
+                        t4 = A[i][j + 4];
+                        t5 = A[i][j + 5];
+                        t6 = A[i][j + 6];
+                        t7 = A[i][j + 7];
+                        B[j][i] = t0;
+                        B[j + 1][i] = t1;
+                        B[j + 2][i] = t2;
+                        B[j + 3][i] = t3;
+                        B[j + 4][i] = t4;
+                        B[j + 5][i] = t5;
+                        B[j + 6][i] = t6;
+                        B[j + 7][i] = t7;
+                    }
+                    B[j][i] = A[i][j];
                 }
             }
         }
@@ -56,6 +76,22 @@ void trans(int M, int N, int A[N][M], int B[M][N])
         }
     }    
 
+}
+
+void trans_1(int M, int N, int A[N][M], int B[M][N])
+{
+      int i, j, ii, jj;
+      for (jj = 0; jj < N; jj += 8)
+        for (ii = 0; ii < M; ii += 8)
+        {
+            for (i = ii; i < ii + 8; i++)
+            {
+                for (j = jj; j < jj + 8; j++)
+                {
+                        B[i][j] = A[j][i];
+                }
+            }
+        }
 }
 
 /*
