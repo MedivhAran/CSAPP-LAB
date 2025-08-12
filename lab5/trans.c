@@ -66,29 +66,24 @@ void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 char trans_desc[] = "Simple row-wise scan transpose";
 void trans(int M, int N, int A[N][M], int B[M][N])
 {
- int i, j, ii, jj;
-    int t0, t1, t2, t3;
-        for (ii = 0; ii < N; ii += 4)
-            for (jj = 0; jj < M; jj += 4)
-            {
-                for (i = ii; i < ii + 4; i++)
-                {
-                    if (ii == jj)
-                        {
-                            t0 = A[i][j];
-                            t1 = A[i][j + 1];
-                            t2 = A[i][j + 2];
-                            t3 = A[i][j + 3];   
-                            B[j][i] = t0;
-                            B[j + 1][i] = t1;
-                            B[j + 2][i] = t2;
-                            B[j + 3][i] = t3;
-                        }
-                    else
-                        for (j = jj; j < jj + 4; j++)
-                            B[j][i] = A[i][j];
-                }
-            }
+   int val0, val1, val2, val3;
+	for(int j = 0; j < M; j += 4)
+	{
+		for(int i = 0; i < N; i += 4)
+		{
+			for(int ii = i; ii < i + 4; ii++)
+			{
+				val0 = A[ii][j];
+				val1 = A[ii][j + 1];
+				val2 = A[ii][j + 2];
+				val3 = A[ii][j + 3];
+				B[j][ii] = val0;
+				B[j + 1][ii] = val1;
+				B[j + 2][ii] = val2;
+				B[j + 3][ii] = val3;
+			}
+		}
+	}
 }
 char trans_desc1[] = "64 64 transpose";
 void trans_1(int M, int N, int A[N][M], int B[M][N])
