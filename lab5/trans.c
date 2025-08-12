@@ -23,14 +23,14 @@ char transpose_submit_desc[] = "Transpose submission";
 void transpose_submit(int M, int N, int A[N][M], int B[M][N])
 {
     int i, j, ii, jj;
-      for (i = 0; i < N; i+= 8)
-        for (j = 0; j < M; j+= 8)
+      for (jj = 0; jj < N; jj += 8)
+        for (ii = 0; ii < M; ii += 8)
         {
-            for (ii = i; ii < i + 8; ii++)
+            for (i = ii; i < ii + 8; i++)
             {
-                for (jj = j; jj < j + 8; jj++)
+                for (j = jj; j < jj + 8; j++)
                 {
-                        B[ii][jj] = A[jj][ii];
+                        B[i][j] = A[j][i];
                 }
             }
         }
